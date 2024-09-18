@@ -1,5 +1,4 @@
 ---
 collections:
   - name: community.vmware
-  - name: nutanix.nutanix
-    src: https://github.com/nutanix/nutanix-ansible.git
+  - name: nutanix.ncp
