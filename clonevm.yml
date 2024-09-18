@@ -3,6 +3,9 @@
   hosts: localhost
   gather_facts: no
   tasks:
+    - name: Make sure service has time to start or stop
+      pause:
+        seconds: 600
     - name: Clone VM from template or existing VM
       community.vmware.vmware_guest:
         hostname: "{{ vcenter_hostname }}"
