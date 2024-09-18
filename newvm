@@ -1,0 +1,37 @@
+---
+- name: Create a new VM in vCenter
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create VM
+      community.vmware.vmware_guest:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        datacenter: "{{ vcenter_datacenter }}"
+        cluster: "{{ vcenter_cluster }}"
+        folder: "{{ vm_folder }}"
+        name: "{{ vm_name }}"
+        state: poweredon
+        guest_id: "{{ vm_guest_id }}"   # Example: 'centos64Guest', 'windows9Server64Guest'
+        esxi_hostname: "{{ esxi_host }}" # Optional, to pin the VM to a specific ESXi host
+        hardware:
+          memory_mb: "{{ vm_memory_mb }}"
+          num_cpus: "{{ vm_num_cpus }}"
+        networks:
+          - name: "{{ vm_network }}"
+            ip: "{{ vm_ip }}"            # Optional: only if you want to specify static IP
+            netmask: "{{ vm_netmask }}"   # Optional
+            gateway: "{{ vm_gateway }}"   # Optional
+            dns_servers:
+              - "{{ vm_dns }}"
+        disk:
+          - size_gb: "{{ vm_disk_size }}"
+            type: thick                  # 'thin' or 'thick'
+            datastore: "{{ vm_datastore }}"
+        customization:
+          dns_servers: "{{ vm_dns }}"
+          domain: "{{ vm_domain }}"
+          timezone: "{{ vm_timezone }}"
+      delegate_to: localhost
