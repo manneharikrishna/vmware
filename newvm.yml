@@ -28,10 +28,8 @@
               - "{{ vm_dns }}"
         disk:
           - size_gb: "{{ vm_disk_size }}"
-            type: thick                  # 'thin' or 'thick'
+            type: thin                  # 'thin' or 'thick'
             datastore: "{{ vm_datastore }}"
         customization:
           dns_servers: "{{ vm_dns }}"
-          domain: "{{ vm_domain }}"
-          timezone: "{{ vm_timezone }}"
       delegate_to: localhost
