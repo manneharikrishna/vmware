@@ -1,0 +1,37 @@
+---
+- name: Clone a VM from an existing template or VM in vCenter
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Clone VM
+      community.vmware.vmware_guest:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: no
+        datacenter: "{{ vcenter_datacenter }}"
+        folder: "{{ vm_folder }}"                     # Folder where the VM will be placed
+        name: "{{ new_vm_name }}"                     # Name of the new VM to be created
+        state: poweredon                              # State of the VM after cloning (e.g., poweredon, poweredoff)
+        template: no                                  # 'yes' if cloning from a template, 'no' if from a VM
+        clone:
+          template: "{{ source_vm_name }}"            # Name of the source VM or template to clone from
+          # Optional customization settings:
+          customization:
+            dns_servers:
+              - "{{ vm_dns }}"
+#            domain: "{{ vm_domain }}"
+#            hostname: "{{ new_vm_hostname }}"         # Set the new hostname for the cloned VM
+#            timezone: "{{ vm_timezone }}"             # Set the timezone for the VM (optional)
+          hardware:
+            memory_mb: "{{ vm_memory_mb }}"           # Specify memory for the new VM (optional)
+            num_cpus: "{{ vm_num_cpus }}"             # Specify number of CPUs for the new VM (optional)
+          network:
+            - name: "{{ vm_network }}"                # Network to attach the VM to
+              ip: "{{ vm_ip }}"                       # IP address if static IP is required (optional)
+              netmask: "{{ vm_netmask }}"             # Netmask if static IP (optional)
+              gateway: "{{ vm_gateway }}"             # Gateway if static IP (optional)
+        disk:
+          - size_gb: "{{ vm_disk_size }}"             # Specify the disk size for the new VM (optional)
+            datastore: "{{ vm_datastore }}"           # Specify the datastore for the new VM (optional)
+      delegate_to: localhost
