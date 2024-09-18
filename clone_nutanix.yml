@@ -24,7 +24,7 @@
         validate_certs: no
         resources:
           cpus: "{{ new_vm_cpus }}"
-            memory_mb: "{{ new_vm_memory_mb }}"
+          memory_mb: "{{ new_vm_memory_mb }}"
         disk:
           - size_gb: "{{ new_vm_disk_size_gb }}"
             storage_container: "{{ storage_container }}"
