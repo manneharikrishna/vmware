@@ -1,0 +1,35 @@
+---
+- name: Clone a Nutanix VM
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Get source VM details
+      nutanix.nutanix.nutanix_vm_facts:
+        cluster: "{{ nutanix_cluster }}"
+        username: "{{ nutanix_username }}"
+        password: "{{ nutanix_password }}"
+#        project: "{{ nutanix_project }}"
+        name: "{{ source_vm_name }}"
+        validate_certs: no
+      register: source_vm
+
+    - name: Clone the VM
+      nutanix.nutanix.nutanix_vm:
+        api_version: 3.1
+        cluster: "{{ nutanix_cluster }}"
+        username: "{{ nutanix_username }}"
+        password: "{{ nutanix_password }}"
+#        project: "{{ nutanix_project }}"
+        name: "{{ new_vm_name }}"
+        validate_certs: no
+        resources:
+          cpus: "{{ new_vm_cpus }}"
+            memory_mb: "{{ new_vm_memory_mb }}"
+        disk:
+          - size_gb: "{{ new_vm_disk_size_gb }}"
+            storage_container: "{{ storage_container }}"
+            disk_type: "disk"
+        networks:
+          - network_uuid: "{{ network_uuid }}"
+        source_vm_uuid: "{{ source_vm.resources[0].uuid }}"
+        state: "present"
