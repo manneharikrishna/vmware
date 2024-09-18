@@ -3,14 +3,11 @@
   hosts: localhost
   gather_facts: no
   tasks:
-    - name: Make sure service has time to start or stop
-      pause:
-        seconds: 600
     - name: Clone VM from template or existing VM
       community.vmware.vmware_guest:
-        hostname: "{{ vcenter_hostname }}"
-        username: "{{ vcenter_username }}"
-        password: "{{ vcenter_password }}"
+#        hostname: "{{ vcenter_hostname }}"
+#        username: "{{ vcenter_username }}"
+#        password: "{{ vcenter_password }}"
         validate_certs: no
         datacenter: "{{ vcenter_datacenter }}"
         folder: "{{ vm_folder }}"                     # Folder where the new VM will be placed
